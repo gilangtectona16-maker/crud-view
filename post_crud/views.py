@@ -2,15 +2,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from .service import *
-from management.models import *
-
-types = Type.objects.all()
-groups = Group.objects.all()
-category = Category.objects.all()
 
 def post_list(request):
-    posts = get_posts()
-    return render(request, "page/list.html", {"posts": posts, "types": types, "groups": groups, "category": category})
+    posts = get_posts()  # asumsi ini dari service.py, fetch dari posts table
+    types = fetch_types()
+    groups = fetch_groups()
+    categories = fetch_categories()  # atau category kalau mau singular
+
+    return render(request, "page/list.html", {
+        "posts": posts,
+        "types": types,
+        "groups": groups,
+        "category": categories  # sesuaikan nama context di template
+    })
 
 def post_detail(request, slug):
     post = get_post_by_id(slug)
@@ -19,6 +23,10 @@ def post_detail(request, slug):
     return render(request, "page/detail.html", {"post": post})
 
 def post_create(request):
+    
+    types = fetch_types()
+    groups = fetch_groups()
+    category = fetch_categories()
 
     if request.method == "POST":
         
@@ -57,6 +65,11 @@ def post_create(request):
     return render(request, "page/create.html", {"types": types, "groups": groups, "category": category})
 
 def post_edit(request, post_id):
+    
+    types = fetch_types()
+    groups = fetch_groups()
+    category = fetch_categories()
+    
     post = get_post_for_update(post_id)
     
     if not post:

@@ -38,11 +38,11 @@
       <td>{{ item.name }}</td>
       <td>
         <a href="/management/edit/{{ mode }}/{{ item.id }}" class="btn btn-warning btn-sm">Edit</a>
-        <a href="/management/delete/{{ mode }}/{{ item.id }}"
+        {% comment %} <a href="/management/delete/{{ mode }}/{{ item.id }}"
            class="btn btn-danger btn-sm"
            onclick="return confirm('Yakin mau hapus?')">
            Delete
-        </a>
+        </a> {% endcomment %}
       </td>
     </tr>
     {% empty %}

@@ -92,3 +92,22 @@ def delete_post(post_id):
         headers=HEADERS
     )
     return r.status_code == 204
+
+TYPES_URL = f"{settings.SUPABASE_URL}/rest/v1/types"
+GROUPS_URL = f"{settings.SUPABASE_URL}/rest/v1/groups"
+CATEGORIES_URL = f"{settings.SUPABASE_URL}/rest/v1/categories"
+
+def fetch_types():
+    response = requests.get(TYPES_URL, headers=HEADERS)
+    response.raise_for_status()
+    return response.json()  # list of dicts [{"id": "...", "name": "berita panas"}, ...]
+
+def fetch_groups():
+    response = requests.get(GROUPS_URL, headers=HEADERS)
+    response.raise_for_status()
+    return response.json()
+
+def fetch_categories():
+    response = requests.get(CATEGORIES_URL, headers=HEADERS)
+    response.raise_for_status()
+    return response.json()
