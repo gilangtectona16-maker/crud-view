@@ -3,6 +3,10 @@
 
 <h2 class="mb-3">📝 {{ title }} Form</h2>
 
+{% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
 <form method="post">
     {% csrf_token %}
 

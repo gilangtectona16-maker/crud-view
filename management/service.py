@@ -9,24 +9,33 @@ HEADERS = {
     "Prefer": "return=representation",  # biar return data setelah insert/update
 }
 
-def fetch_posts(page=1, limit=15, group_name=None):
+def fetch_items(table_name, limit=50):
+    url = f"{settings.SUPABASE_URL}/rest/v1/{table_name}"
     params = {
         "select": "*",
-        "order": "created_at.desc",
+        "order": "id.asc",  # atau name.asc kalau ada field name
         "limit": limit,
-        "offset": (page - 1) * limit,
     }
-    
-    if group_name:
-        # filter array contains group_name (PostgreSQL style)
-        params["groups"] = f"cs.{{{group_name}}}"  # cs = contains (untuk array text[])
-    
-    response = requests.get(BASE_URL, headers=HEADERS, params=params)
+    response = requests.get(url, headers=HEADERS, params=params)
     response.raise_for_status()
     return response.json()
 
-def fetch_post(unique_id):
-    params = {"select": "*", "unique_id": f"eq.{unique_id}", "limit": 1}
-    response = requests.get(BASE_URL, headers=HEADERS, params=params)
-    data = response.json()
-    return data[0] if data else None
+def create_item(table_name, data):
+    url = f"{settings.SUPABASE_URL}/rest/v1/{table_name}"
+    response = requests.post(url, headers=HEADERS, json=data)
+    response.raise_for_status()
+    return response.json()  # return list inserted data
+
+def update_item(table_name, item_id, data):
+    url = f"{settings.SUPABASE_URL}/rest/v1/{table_name}"
+    params = {"id": f"eq.{item_id}"}
+    response = requests.patch(url, headers=HEADERS, params=params, json=data)
+    response.raise_for_status()
+    return response.json()
+
+def delete_item(table_name, item_id):
+    url = f"{settings.SUPABASE_URL}/rest/v1/{table_name}"
+    params = {"id": f"eq.{item_id}"}
+    response = requests.delete(url, headers=HEADERS, params=params)
+    response.raise_for_status()
+    return True  # sukses kalau no error

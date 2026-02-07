@@ -1,56 +1,54 @@
 {% extends 'base.html' %}
 {% block content %}
+  <h1 class="mb-4 fw-bold">📰 Manage {{ title }}</h1>
 
-<h1 class="mb-4 fw-bold">📰 Manage {{ title }}</h1>
+  <div class="dropdown mb-3">
+    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">{{ title }}</button>
+    <ul class="dropdown-menu">
+      <li>
+        <a class="dropdown-item" href="?mode=type">Type</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="?mode=category">Category</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="?mode=group">Group</a>
+      </li>
+    </ul>
+  </div>
 
-<div class="dropdown mb-3">
-  <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
-    {{ title }}
-  </button>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="?mode=type">Type</a></li>
-    <li><a class="dropdown-item" href="?mode=category">Category</a></li>
-    <li><a class="dropdown-item" href="?mode=group">Group</a></li>
-  </ul>
-</div>
+  <div class="mt-2 mb-3">
+    <a href="/management/form/{{ mode }}" class="btn btn-success">➕ Tambah {{ title }}</a>
+    <a href="{% url 'to_blog' %}" class="btn btn-info">Kembali ke Blog</a>
+  </div>
 
-<div class="mt-2 mb-3">
-    <a href="/management/create/?mode={{ mode }}" class="btn btn-success">
-    ➕ Tambah {{ title }}
-</a>
-<a href="{% url 'to_blog' %}" class="btn btn-info">
-    Kembali ke Blog
-</a>
-</div>
-
-<table class="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>Nama {{ title }}</th>
-      <th>Aksi</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for item in data %}
-    <tr>
-      <td>{{ forloop.counter }}</td>
-      <td>{{ item.name }}</td>
-      <td>
-        <a href="/management/edit/{{ mode }}/{{ item.id }}" class="btn btn-warning btn-sm">Edit</a>
-        {% comment %} <a href="/management/delete/{{ mode }}/{{ item.id }}"
-           class="btn btn-danger btn-sm"
-           onclick="return confirm('Yakin mau hapus?')">
-           Delete
-        </a> {% endcomment %}
-      </td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="3" class="text-center">Belum ada data 😔</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama {{ title }}</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ item.name|default:item.name|default:'No name' }}</td>
+          <td>
+            <a href="/management/form/{{ mode }}/{{ item.id }}/" class="btn btn-warning btn-sm">Edit</a>
+            <a href="/management/delete/{{ mode }}/{{ item.id }}"
+              class="btn btn-danger btn-sm"
+              onclick="return confirm('Yakin mau hapus?')">
+              Delete
+            </a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3" class="text-center">Belum ada data 😔</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
