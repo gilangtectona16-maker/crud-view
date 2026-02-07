@@ -1,0 +1,12 @@
+### tutorial install projek untuk siap digunakan :
+
+1. masuk ke dalam command prompt dengan ketik "Windows + R", lalu ketik di kolom input "cmd"
+2. setelah masuk ke dalam powershell (atau cmd nya), biarkan dahulu untuk kita install python lewat web
+3. cari di mesin telunsur "python" lalu masuk web nya. cari bagian atau fitur "download"
+4. scroll ke bawah, maka akan ada sebuah table dimana tempatnya nama versi kode python dan deskripsi lainnya
+5. download salah satu versi python (saran: pilih yang antara versi 3.10 sampai 3.12)
+6. scrool kebawah sampai ketemu tulisan "FILES", dibawahnya ada pilihan install python dari berbagai OS. klik yang bagian Windows
+
+kalau mau jalankan kode, install python env dahulu:
+
+`python -m env *nama env mu*`

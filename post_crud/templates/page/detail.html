@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="mx-5">
+        <h1 class="fw-bold mb-3">{{ post.title }}</h1>
+
+        {% comment %} <img src="{{ post.featured_image_url }}" alt="featured"> {% endcomment %}
+        <p class="text-muted">
+            Diposting pada tanggal {{ post.created_at|date:"d M Y" }}
+        </p>
+
+        {% if post.featured_image_url %}
+        <img src="{{ post.featured_image_url }}" class="img-fluid rounded mb-4">
+        {% endif %}
+
+        <article class="fs-5">
+            {{ post.content|linebreaks }}
+        </article>
+
+        <a href="{% url 'post_list' %}" class="btn btn-secondary">Kembali ke Daftar</a>
+    </div>
+    
+{% endblock %}

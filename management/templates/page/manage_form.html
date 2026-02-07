@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="mb-3">📝 {{ title }} Form</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <input name="name"
+           placeholder="Nama {{ title }}"
+           class="form-control mb-2"
+           value="{{ obj.name|default:'' }}">
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <button class="btn btn-success mt-3">
+        💾 Simpan
+    </button>
+
+    <a href="/management/?mode={{ mode }}" class="btn btn-secondary mt-3">
+        Kembali
+    </a>
+</form>
+
+{% endblock %}

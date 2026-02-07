@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input name="title" placeholder="Judul" class="form-control mb-2" required>
+        
+        <textarea name="content" placeholder="Konten" class="form-control mb-2" required></textarea>
+        
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Thumbnail</label>
+                <input type="file" name="thumbnail" class="form-control mb-2">
+
+                <select class="form-select" name="category" aria-label="Default select example" required>
+                    <option selected disabled>Pilih Kategori Blog</option>
+                    {% for c in category %}
+                        <option value="{{ c.name }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <label>Featured Image</label>
+                <input type="file" name="featured" class="form-control mb-2">
+
+                <select class="form-select" name="types" aria-label="Default select example" required>
+                    <option selected disabled>Pilih Tipe Blog</option>
+                    {% for t in types %}
+                        <option value="{{ t.name }}">{{ t.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <label>Group</label>
+            <br>
+            {% for g in groups %} 
+                <input type="checkbox" name="groups" value="{{ g.name }}"> {{ g.name }}
+            {% endfor %}
+            <br>
+
+        <button class="btn btn-success mt-3">Publish</button>
+    </form>
+{% endblock %}
