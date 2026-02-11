@@ -69,9 +69,6 @@ def create_post(data):
         headers=HEADERS,
         json=data
     )
-    
-    print("STATUS:", r.status_code)
-    print("RESPONSE:", r.text)
 
     r.raise_for_status()
     return r.json()
