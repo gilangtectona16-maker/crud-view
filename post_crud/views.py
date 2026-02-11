@@ -1,8 +1,23 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from .service import *
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from accounts.decorators import require_login
 
+class PostListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # request.user sekarang punya payload dari token!
+        return Response({
+            "message": f"Halo admin {request.user.get('email', 'imut')}~ Ini list post-mu~ 📝💕"
+        })
+
+@require_login
 def post_list(request):
     posts = get_posts()  # asumsi ini dari service.py, fetch dari posts table
     types = fetch_types()
@@ -15,13 +30,15 @@ def post_list(request):
         "groups": groups,
         "category": categories  # sesuaikan nama context di template
     })
-
+    
+@require_login
 def post_detail(request, slug):
     post = get_post_by_id(slug)
     if not post:
         return render(request, "404.html", status=404)
     return render(request, "page/detail.html", {"post": post})
 
+@require_login
 def post_create(request):
     
     types = fetch_types()
@@ -64,6 +81,7 @@ def post_create(request):
 
     return render(request, "page/create.html", {"types": types, "groups": groups, "category": category})
 
+@require_login
 def post_edit(request, post_id):
     
     types = fetch_types()
@@ -91,9 +109,15 @@ def post_edit(request, post_id):
 
     return render(request, "page/edit.html", {"post": post, "types": types, "post_groups": post_groups, "groups": groups, "category": category})
 
+@require_login
 def post_delete(request, post_id):
     delete_post(post_id)
     return redirect("post_list")
 
 def to_manage(request):
     return redirect("manage_list")
+
+def logout_view(request):
+    request.session.flush()
+    messages.info(request, "Logout berhasil~ Sampai jumpa lagi ya")
+    return redirect('login')

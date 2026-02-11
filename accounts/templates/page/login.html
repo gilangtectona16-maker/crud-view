@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Halo! masukkan kata kunci rahasia~</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: {% if 'success' in message.tags %}green{% else %}red{% endif %}; font-weight: bold;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        <input type="password" name="secret_key" placeholder="Kata kunci rahasia di sini~" required autofocus>
+        <br><br>
+        <button type="submit">Login</button>
+    </form>
+
+{% endblock %}

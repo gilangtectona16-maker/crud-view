@@ -1,7 +1,22 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, HttpResponseBadRequest
 from .service import *
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from accounts.decorators import require_login
 
+class PostListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # request.user sekarang punya payload dari token!
+        return Response({
+            "message": f"Halo admin {request.user.get('email', 'imut')}~ Ini list post-mu~ 📝💕"
+        })
+
+@require_login
 def manage_list(request):
     mode = request.GET.get("mode", "type")
     title_map = {
@@ -33,6 +48,7 @@ def manage_list(request):
         "mode": mode,
     })
 
+@require_login
 def manage_form(request, mode, item_id=None):
     table_map = {
         "type": "types",
@@ -97,6 +113,7 @@ def manage_form(request, mode, item_id=None):
         "obj": obj,
     })
 
+@require_login
 def manage_delete(request, mode, item_id):
     table_map = {"type": "types", "category": "categories", "group": "groups"}
     table_name = table_map.get(mode)
@@ -111,6 +128,12 @@ def manage_delete(request, mode, item_id):
             return redirect(f"/management/?mode={mode}&error={str(e)}")
 
     return redirect(f"/management/?mode={mode}")
-    
+
+@require_login
 def to_blog(request):
     return redirect("post_list")
+
+def logout_view(request):
+    request.session.flush()
+    messages.info(request, "Logout berhasil~ Sampai jumpa lagi ya")
+    return redirect('login')

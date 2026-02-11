@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1 class="mb-4 fw-bold">📰 Manage {{ title }}</h1>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0 fw-bold">📰 Blog Admin</h1>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-sm btn-outline-pink">Logout</button>
+    </form>
+  </div>
 
   <div class="dropdown mb-3">
     <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">{{ title }}</button>
@@ -37,11 +43,7 @@
           <td>{{ item.name|default:item.name|default:'No name' }}</td>
           <td>
             <a href="/management/form/{{ mode }}/{{ item.id }}/" class="btn btn-warning btn-sm">Edit</a>
-            <a href="/management/delete/{{ mode }}/{{ item.id }}"
-              class="btn btn-danger btn-sm"
-              onclick="return confirm('Yakin mau hapus?')">
-              Delete
-            </a>
+            <a href="/management/delete/{{ mode }}/{{ item.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin mau hapus?')">Delete</a>
           </td>
         </tr>
       {% empty %}

@@ -43,8 +43,6 @@ def get_posts():
             "order": "created_at.desc",
         },
     )
-    print("URL:", settings.SUPABASE_URL)
-    print("KEY:", settings.SUPABASE_SERVICE_KEY[:10])
     r.raise_for_status()
     return r.json()
 
