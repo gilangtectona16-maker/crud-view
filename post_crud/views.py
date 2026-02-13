@@ -74,9 +74,6 @@ def post_create(request):
         create_post(data)
         print(data)
         
-        result = create_post(data)
-        print("INSERT RESULT:", result)
-        
         return redirect("post_list")
 
     return render(request, "page/create.html", {"types": types, "groups": groups, "category": category})

@@ -71,6 +71,16 @@ def create_post(data):
     )
 
     r.raise_for_status()
+    
+    if r.text.strip():
+        try:
+            return r.json()
+        except requests.exceptions.JSONDecodeError:
+            print("Supabase balikin response bukan JSON nih:", r.text)
+            return []
+    else:
+        print("Supabase sukses tapi body kosong~ aman kok!")
+        return [] 
     return r.json()
 
 def update_post(post_id, data):
